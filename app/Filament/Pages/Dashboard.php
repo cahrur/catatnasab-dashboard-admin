@@ -27,7 +27,7 @@ class Dashboard extends BaseDashboard
                             ->maxDate(now()),
                         // ...
                     ])
-                    ->columns(3),
+                    ->columns(2),
             ]);
     }
 }
