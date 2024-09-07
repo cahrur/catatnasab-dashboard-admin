@@ -17,23 +17,22 @@ php artisan make:filament-user
 - Batasi pengguna yang bisa login ke panel admin hanya yang menggunakan domain email tertentu
 Edit file App\Models\User.php
 
-<?php
+    <?php
+    namespace App\Models;
  
-namespace App\Models;
+    use Filament\Models\Contracts\FilamentUser;
+    use Filament\Panel;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
  
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
-use Illuminate\Foundation\Auth\User as Authenticatable;
- 
-class User extends Authenticatable implements FilamentUser
-{
-    // ...
+    class User extends Authenticatable implements FilamentUser
+    {
+     // ...
  
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@namadomain.com') && $this->hasVerifiedEmail();
     }
-}
+    }
 
 
 - Mulai membuat model
