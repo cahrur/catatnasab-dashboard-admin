@@ -12,11 +12,9 @@ Saya buat gambaran flow databasenya disini [flow-catatnasab](https://github.com/
     ```
 
 ## Instalasi Filament
-
-    ```bash
+    
     composer require filament/filament:"^3.2" -W
     php artisan filament:install --panels
-    ```
 
 ## Buat Pengguna Admin
     php artisan make:filament-user
@@ -25,7 +23,7 @@ Saya buat gambaran flow databasenya disini [flow-catatnasab](https://github.com/
 
 Edit file `App\Models\User.php`:
 
-    ```php
+    
     <?php
 
     namespace App\Models;
@@ -44,11 +42,10 @@ Edit file `App\Models\User.php`:
         }
     }
     ?>
-    ```
+    
 
 ## Mulai Membuat Model
 
-    ```bash
     php artisan make:model User -m
     php artisan make:model Plan -m
     php artisan make:model Payment -m
@@ -61,20 +58,18 @@ Buka file migrasi di folder `database/migrations`.
 
 ## Membuat Resource
 
-    ```bash
     php artisan make:filament-resource User
     php artisan make:filament-resource Plan
     php artisan make:filament-resource Payment
     php artisan make:filament-resource Order
-    ```
+
 
 Jika ingin langsung otomatis generate, tambahkan `--generate`.
 
 Contoh:
 
-    ```bash
     php artisan make:filament-resource User --generate
-    ```
+
 
 ## Menyiapkan Form di Resource
 
@@ -82,7 +77,6 @@ Panduan ini dipakai jika dibutuhkan. Jika sudah menggunakan `--generate` dan tid
 
 ### Input Text Nama
 
-    ```php
     use Filament\Forms;
     use Filament\Forms\Form;
 
@@ -97,7 +91,6 @@ Panduan ini dipakai jika dibutuhkan. Jika sudah menggunakan `--generate` dan tid
 
 ## Menyiapkan Table Resource
 
-    ```php
     use Filament\Tables;
     use Filament\Tables\Table;
 
@@ -108,11 +101,10 @@ Panduan ini dipakai jika dibutuhkan. Jika sudah menggunakan `--generate` dan tid
                 Tables\Columns\TextColumn::make('name'),
             ]);
     }
-    ```
+
 
 ## Trigger
 
-    ```sql
     DELIMITER $$
 
     CREATE TRIGGER trigger_update_user_plan
@@ -131,4 +123,3 @@ Panduan ini dipakai jika dibutuhkan. Jika sudah menggunakan `--generate` dan tid
     END$$
 
     DELIMITER ;
-    ```
