@@ -5,9 +5,11 @@ Saya buat gambaran flow databasenya disini https://github.com/cahrur/flow-catatn
 - Setup Database
 - Konfigurasi .env
 - DB Migrate
+
+```bash
 php artisan migrate
 
-- Instalasi Filament
+### Instalasi Filament
 composer require filament/filament:"^3.2" -W
 php artisan filament:install --panels
 
