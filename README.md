@@ -17,6 +17,7 @@ php artisan make:filament-user
 - Batasi pengguna yang bisa login ke panel admin hanya yang menggunakan domain email tertentu
 Edit file App\Models\User.php
 
+```php
     <?php
     namespace App\Models;
  
@@ -33,6 +34,7 @@ Edit file App\Models\User.php
         return str_ends_with($this->email, '@namadomain.com') && $this->hasVerifiedEmail();
     }
     }
+    ?>
 
 
 - Mulai membuat model
