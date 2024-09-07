@@ -7,33 +7,55 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class StatsOverview extends BaseWidget
 {
     
     use InteractsWithPageFilters;
-    
-    protected function getStats(): array
+
+    public function getStats(): array
+
     {
-        $totalPenjualan = Order::where('status', 'paid')->sum('amount');
-        $totalPenjualanFormatted = 'Rp ' . number_format($totalPenjualan, 2, ',', '.');
-        $totalCustomer = User::where('is_admin', 0)->count();
 
-        $startDate = ! is_null($this->filters['startDate'] ?? null) ?
-            Carbon::parse($this->filters['startDate']) :
-            null;
+        $startDate = $this->filters['startDate'] ?? null;
+        $endDate = $this->filters['endDate'] ?? null;
 
-        $endDate = ! is_null($this->filters['endDate'] ?? null) ?
-            Carbon::parse($this->filters['endDate']) :
-            now();
+        $totalPenjualan = Order::query()
+            ->join('plans', 'orders.plan_id', '=', 'plans.id')
+            ->when($startDate, fn (Builder $query) => $query->whereDate('orders.created_at', '>=', $startDate))
+            ->when($endDate, fn (Builder $query) => $query->whereDate('orders.created_at', '<=', $endDate))
+            ->where('orders.status', 'paid')
+            ->sum('plans.price');
+
+        $totalPenjualanFormatted = number_format($totalPenjualan, 0, ',', '.');
+
 
         return [
-            Stat::make('Total Penjualan', $totalPenjualanFormatted)
-            ->description('32k increase')
+            Stat::make(
+                label: 'Total Penjualan',
+                value: 'Rp ' . $totalPenjualanFormatted,
+            )
+            ->description('32k increase') // Anda bisa menyesuaikan deskripsi ini
             ->descriptionIcon('heroicon-m-arrow-trending-up')
-            ->color('success'),
-            Stat::make('Total Pesanan', Order::count()),
-            Stat::make('Total Customer', $totalCustomer),
+            ->color('success'), 
+            
+            Stat::make(
+                label: 'Total pesanan',
+                value: Order::query()
+                    ->when($startDate, fn (Builder $query) => $query->whereDate('created_at', '>=', $startDate))
+                    ->when($endDate, fn (Builder $query) => $query->whereDate('created_at', '<=', $endDate))
+                    ->count(),
+
+                ),
+            Stat::make(
+                label: 'Total Customer',
+                value: User::query()
+                ->when($startDate, fn (Builder $query) => $query->whereDate('created_at', '>=', $startDate))
+                ->when($endDate, fn (Builder $query) => $query->whereDate('created_at', '<=', $endDate))
+                ->count(),
+
+            ),
         ];
     }
 }
