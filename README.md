@@ -19,10 +19,7 @@ Saya buat gambaran flow databasenya disini [flow-catatnasab](https://github.com/
     ```
 
 ## Buat Pengguna Admin
-
-    ```bash
     php artisan make:filament-user
-    ```
 
 ## Batasi Pengguna yang Bisa Login ke Panel Admin
 
