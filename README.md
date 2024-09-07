@@ -50,7 +50,6 @@ Edit file `App\Models\User.php`:
     php artisan make:model Plan -m
     php artisan make:model Payment -m
     php artisan make:model Order -m
-    ```
 
 ## Konfigurasi Migrasi DB
 
@@ -87,7 +86,6 @@ Panduan ini dipakai jika dibutuhkan. Jika sudah menggunakan `--generate` dan tid
                 Forms\Components\TextInput::make('nama'),
             ]);
     }
-    ```
 
 ## Menyiapkan Table Resource
 
