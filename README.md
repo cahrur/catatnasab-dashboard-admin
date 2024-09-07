@@ -86,3 +86,24 @@ public static function table(Table $table): Table
 
 ##Trigger
 
+```sql
+
+DELIMITER $$
+
+CREATE TRIGGER trigger_update_user_plan
+AFTER UPDATE ON orders
+FOR EACH ROW
+BEGIN
+    IF NEW.status = 'paid' THEN
+        UPDATE users
+        SET 
+            plan = NEW.plan_id,
+            expired_plan = DATE_ADD(NEW.created_at, INTERVAL (SELECT durasi FROM plans WHERE id = NEW.plan_id) DAY),
+            start_plan = NEW.created_at,
+            updated_at = NEW.updated_at
+        WHERE id = NEW.user_id;
+    END IF;
+END$$
+
+DELIMITER ;
+
