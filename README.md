@@ -37,7 +37,7 @@ Edit file App\Models\User.php
     ?>
 
 
-- Mulai membuat model
+-Mulai membuat model
 php artisan make:model User -m
 php artisan make:model Plan -m
 php artisan make:model Payment -m
