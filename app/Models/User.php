@@ -22,6 +22,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function order(): BelongsTo
     {
-        return $this->belongsTo(Order::class);
+        return $this->hasMany(Order::class);
     }
 }

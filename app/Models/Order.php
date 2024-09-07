@@ -12,11 +12,15 @@ class Order extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'paket_id',
+        'phone',
+        'email',
+        'plan_id',
         'payment_amount',
         'secret_key',
         'payment_id',
         'payment_method',
+        'amount',
+        'payment_amount',
         'status'
     ];
 
