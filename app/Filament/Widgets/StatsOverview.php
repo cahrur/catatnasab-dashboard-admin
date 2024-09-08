@@ -17,10 +17,15 @@ class StatsOverview extends BaseWidget
     public function getStats(): array
 
     {
-
+        // Mendapatkan nilai filter tanggal
         $startDate = $this->filters['startDate'] ?? null;
         $endDate = $this->filters['endDate'] ?? null;
 
+        // Mendapatkan periode sebelumnya
+        $previousStartDate = $startDate ? \Carbon\Carbon::parse($startDate)->subMonth() : null;
+        $previousEndDate = $endDate ? \Carbon\Carbon::parse($endDate)->subMonth() : null;
+
+        // Menghitung total penjualan periode saat ini
         $totalPenjualan = Order::query()
             ->join('plans', 'orders.plan_id', '=', 'plans.id')
             ->when($startDate, fn (Builder $query) => $query->whereDate('orders.created_at', '>=', $startDate))
@@ -28,6 +33,20 @@ class StatsOverview extends BaseWidget
             ->where('orders.status', 'paid')
             ->sum('plans.price');
 
+        // Menghitung total penjualan periode sebelumnya
+        $totalPenjualanBulanLalu = Order::query()
+        ->join('plans', 'orders.plan_id', '=', 'plans.id')
+        ->when($previousStartDate, fn (Builder $query) => $query->whereDate('orders.created_at', '>=', $previousStartDate))
+        ->when($previousEndDate, fn (Builder $query) => $query->whereDate('orders.created_at', '<=', $previousEndDate))
+        ->where('orders.status', 'paid') // Pastikan hanya mengambil orders dengan status 'paid'
+        ->sum('plans.price');
+
+        // Menghitung persentase peningkatan
+        $increase = $totalPenjualanBulanLalu > 0
+        ? (($totalPenjualan - $totalPenjualanBulanLalu) / $totalPenjualanBulanLalu) * 100
+        : 0;
+
+        // Format total penjualan
         $totalPenjualanFormatted = number_format($totalPenjualan, 0, ',', '.');
 
 
@@ -36,7 +55,7 @@ class StatsOverview extends BaseWidget
                 label: 'Total Penjualan',
                 value: 'Rp ' . $totalPenjualanFormatted,
             )
-            ->description('32k increase') // Anda bisa menyesuaikan deskripsi ini
+            ->description(number_format($increase, 2) . '% increase')
             ->descriptionIcon('heroicon-m-arrow-trending-up')
             ->color('success'), 
             

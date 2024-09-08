@@ -31,16 +31,12 @@ class PaymentResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('payment_method')
-                    ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('api_key')
-                    ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('secret_key')
-                    ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('callback')
-                    ->required()
                     ->maxLength(255),
                 Forms\Components\Toggle::make('status')
                     ->required(),
@@ -53,16 +49,19 @@ class PaymentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('provider')
                     ->searchable(),
+                Tables\Columns\IconColumn::make('status')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('payment_method')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('api_key')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('secret_key')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('callback')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('status')
-                    ->boolean(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

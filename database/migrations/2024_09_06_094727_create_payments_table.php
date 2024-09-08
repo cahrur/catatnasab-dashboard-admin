@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('provider');
-            $table->string('payment_method');
-            $table->string('api_key');
-            $table->string('secret_key');
-            $table->string('callback');
+            $table->string('payment_method')->nullable();
+            $table->string('api_key')->nullable();
+            $table->string('secret_key')->nullable();
+            $table->string('callback')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
         });
