@@ -58,6 +58,10 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->query(
+            // Mengatur urutan default berdasarkan kolom created_at dalam urutan descending (terbaru terlebih dahulu)
+            User::query()->orderBy('created_at', 'desc')
+                )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),

@@ -21,10 +21,16 @@ class LatestOrders extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('id')->label('Order ID'),
-                Tables\Columns\TextColumn::make('user.name')->label('Customer Name'),
-                Tables\Columns\TextColumn::make('amount')->label('Amount')->formatStateUsing(fn ($state) => 'Rp' . number_format($state, 0, ',', '.')),
+                Tables\Columns\TextColumn::make('user.name')->label('Customer'),
+                Tables\Columns\TextColumn::make('plan.name')
+                    ->label('Plan'),
+                Tables\Columns\TextColumn::make('plan.price')
+                    ->label('Harga')
+                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.')),
+                Tables\Columns\TextColumn::make('payment.payment_method')
+                    ->label('Metode Pembayaran'),
                 Tables\Columns\TextColumn::make('status')->label('Status'),
-                Tables\Columns\TextColumn::make('created_at')->label('Order Date')->dateTime('d M Y, H:i'),
+                Tables\Columns\TextColumn::make('created_at')->label('Tanggal')->dateTime('d M Y, H:i'),
             ]);
     }
 }

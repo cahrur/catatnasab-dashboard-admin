@@ -81,6 +81,10 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->query(
+            // Mengatur urutan default berdasarkan kolom created_at dalam urutan descending (terbaru terlebih dahulu)
+            Order::query()->orderBy('created_at', 'desc')
+                )
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('Id')
@@ -105,19 +109,21 @@ class OrderResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('payment.payment_method')
-                    ->label('Metode Pembayaran'),
+                    ->label('Payment'),
 
                 Tables\Columns\TextColumn::make('plan.name')
                     ->label('Plan'),
 
                 Tables\Columns\TextColumn::make('plan.price')
-                    ->label('Harga'),
+                    ->label('Harga')
+                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.')),
 
                 Tables\Columns\TextColumn::make('plan.price')
-                    ->label('Total Bayar'),
+                    ->label('Total Bayar')
+                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.')),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Tanggal Order')
+                    ->label('Tanggal')
                     ->sortable(),
                     
                 Tables\Columns\TextColumn::make('updated_at')
